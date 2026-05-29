@@ -349,7 +349,7 @@ async function fetchINat(taxon: Taxon, bbox: [number, number, number, number], m
     url.searchParams.set("mappable", "true");
 
     const resp = await fetch(url.toString(), {
-      headers: { "User-Agent": "ForageForAll/0.1 (github.com/jphein/forageforall)" },
+      headers: { "User-Agent": "ForageForAll/0.1 (github.com/techempower-org/forageforall)" },
     });
     if (!resp.ok) break;
 

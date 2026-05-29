@@ -41,7 +41,7 @@ export const SOURCE_LAYERS: SourceLayer[] = [
     color: palette.moss,          // #4A7C2E
     license: "AGPLv3 (code), CC BY-SA 4.0 (data)",
     attribution: "Forage for All community",
-    attributionUrl: "https://github.com/jphein/forageforall",
+    attributionUrl: "https://github.com/techempower-org/forageforall",
   },
   {
     key: "inat",

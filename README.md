@@ -11,9 +11,9 @@ Drop a pin. Share what's ripe. Eat from your own neighborhood.
 [![Powered by InstantDB](https://img.shields.io/badge/Realtime-InstantDB-3E2E1F.svg?style=flat-square)](https://instantdb.com)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-E8A838.svg?style=flat-square)](./CONTRIBUTING.md)
 [![Platform](https://img.shields.io/badge/iOS%20%7C%20Android-supported-6B5440.svg?style=flat-square)](#install)
-[![Web](https://img.shields.io/badge/Web-live-4A7C2E.svg?style=flat-square)](https://jphein.github.io/forageforall/app/)
+[![Web](https://img.shields.io/badge/Web-live-4A7C2E.svg?style=flat-square)](https://techempower-org.github.io/forageforall/app/)
 
-[**Web app**](https://jphein.github.io/forageforall/app/) · [**Website**](https://jphein.github.io/forageforall/) · [**Docs**](./docs) · [**Roadmap**](./ROADMAP.md) · [**Ethics**](./FORAGING_ETHICS.md)
+[**Web app**](https://techempower-org.github.io/forageforall/app/) · [**Website**](https://techempower-org.github.io/forageforall/) · [**Docs**](./docs) · [**Roadmap**](./ROADMAP.md) · [**Ethics**](./FORAGING_ETHICS.md)
 
 </div>
 
@@ -44,11 +44,11 @@ Billions of pounds of fruit fall to sidewalks every year while people buy the sa
 
 ### Try it now (Web)
 
-Open **[jphein.github.io/forageforall/app/](https://jphein.github.io/forageforall/app/)** in any browser. No install, no account required to browse the map.
+Open **[techempower-org.github.io/forageforall/app/](https://techempower-org.github.io/forageforall/app/)** in any browser. No install, no account required to browse the map.
 
 ### Try it now (Android)
 
-Download the latest preview APK from **[GitHub Releases](https://github.com/jphein/forageforall/releases/latest)**, enable "Install from unknown sources," and tap to install. The build uses the live InstantDB backend, so pins you drop are real. iOS store build is queued.
+Download the latest preview APK from **[GitHub Releases](https://github.com/techempower-org/forageforall/releases/latest)**, enable "Install from unknown sources," and tap to install. The build uses the live InstantDB backend, so pins you drop are real. iOS store build is queued.
 
 ### Build from source
 
@@ -60,7 +60,7 @@ Download the latest preview APK from **[GitHub Releases](https://github.com/jphe
 - A [Google Maps API key](https://console.cloud.google.com) with Maps SDK for iOS + Android enabled
 
 ```bash
-git clone https://github.com/jphein/forageforall.git
+git clone https://github.com/techempower-org/forageforall.git
 cd forageforall
 nvm use
 npm install
@@ -210,7 +210,7 @@ We especially need:
 3. [`FORAGING_ETHICS.md`](./FORAGING_ETHICS.md) — the community code
 4. [`CODE_OF_CONDUCT.md`](./CODE_OF_CONDUCT.md)
 
-First-timers: look for issues tagged [`good first issue`](https://github.com/jphein/forageforall/labels/good%20first%20issue).
+First-timers: look for issues tagged [`good first issue`](https://github.com/techempower-org/forageforall/labels/good%20first%20issue).
 
 ---
 
