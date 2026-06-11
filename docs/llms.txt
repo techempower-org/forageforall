@@ -1,4 +1,4 @@
-<!-- llms.txt — machine-readable index for AI agents crawling forageforall.org
+<!-- llms.txt — machine-readable index for AI agents crawling forage.techempower.org
      Spec: https://llmstxt.org -->
 
 # Forage for All
@@ -24,4 +24,4 @@ Built with Expo + React Native + TypeScript + InstantDB + Google Maps.
 ## Optional
 
 - [Good first issues for agents](https://github.com/techempower-org/forageforall/blob/main/.github/ISSUE_TEMPLATE/agent-tasks.md): Pre-scoped tasks with file paths and acceptance criteria
-- [Press kit](https://forage-for-all.github.io/app/press/): Logos, screenshots, boilerplate
+- [Press kit](https://forage.techempower.org/press/): Logos, screenshots, boilerplate

@@ -35,10 +35,10 @@ jobs:
         env:
           EXPO_PUBLIC_GOOGLE_MAPS_WEB_KEY: ${{ secrets.GOOGLE_MAPS_WEB_KEY }}
           INSTANT_APP_ID: ${{ secrets.INSTANT_APP_ID }}
-          # GitHub Pages serves this repo at /forageforall/ and we stash
-          # the Expo bundle under /app/, so every asset URL in index.html
-          # needs to be prefixed with the full subpath.
-          EXPO_BASE_URL: /forageforall/app
+          # The site is served at the root of forage.techempower.org and
+          # the Expo bundle is stashed under /app/, so every asset URL in
+          # index.html needs that prefix.
+          EXPO_BASE_URL: /app
         run: npx expo export --platform web --output-dir web-build
 
       - name: Merge web app into docs/app/
@@ -47,9 +47,9 @@ jobs:
           cp -r web-build/* docs/app/
           # GH Pages serves a root-level 404.html for any unmatched path.
           # We want that fallback to load the SPA *only* for paths under
-          # /forageforall/app/ — so dynamic routes like /app/listing/<id>
-          # render correctly. Typos anywhere else (e.g. /forageforall/foo)
-          # should still see a regular 404 page.
+          # /app/ — so dynamic routes like /app/listing/<id> render
+          # correctly. Typos anywhere else (e.g. /foo) should still see
+          # a regular 404 page.
           cat > docs/404.html <<'EOF'
           <!DOCTYPE html>
           <html lang="en">
@@ -59,7 +59,7 @@ jobs:
               <title>Page not found · Forage for All</title>
               <script>
                 (function () {
-                  var APP_PREFIX = "/forageforall/app/";
+                  var APP_PREFIX = "/app/";
                   if (window.location.pathname.indexOf(APP_PREFIX) === 0) {
                     // Hand the URL to the SPA verbatim. The exported
                     // index.html is a full Expo Router bundle — it will
@@ -82,7 +82,7 @@ jobs:
             </head>
             <body>
               <h1>Page not found</h1>
-              <p>That page doesn't exist. <a href="/forageforall/">Back to Forage for All</a>.</p>
+              <p>That page doesn't exist. <a href="/">Back to Forage for All</a>.</p>
             </body>
           </html>
           EOF

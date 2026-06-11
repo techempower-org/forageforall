@@ -11,9 +11,9 @@ Drop a pin. Share what's ripe. Eat from your own neighborhood.
 [![Powered by InstantDB](https://img.shields.io/badge/Realtime-InstantDB-3E2E1F.svg?style=flat-square)](https://instantdb.com)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-E8A838.svg?style=flat-square)](./CONTRIBUTING.md)
 [![Platform](https://img.shields.io/badge/iOS%20%7C%20Android-supported-6B5440.svg?style=flat-square)](#install)
-[![Web](https://img.shields.io/badge/Web-live-4A7C2E.svg?style=flat-square)](https://techempower-org.github.io/forageforall/app/)
+[![Web](https://img.shields.io/badge/Web-live-4A7C2E.svg?style=flat-square)](https://forage.techempower.org/app/)
 
-[**Web app**](https://techempower-org.github.io/forageforall/app/) · [**Website**](https://techempower-org.github.io/forageforall/) · [**Docs**](./docs) · [**Roadmap**](./ROADMAP.md) · [**Ethics**](./FORAGING_ETHICS.md)
+[**Web app**](https://forage.techempower.org/app/) · [**Website**](https://forage.techempower.org/) · [**Docs**](./docs) · [**Roadmap**](./ROADMAP.md) · [**Ethics**](./FORAGING_ETHICS.md)
 
 </div>
 
@@ -44,7 +44,7 @@ Billions of pounds of fruit fall to sidewalks every year while people buy the sa
 
 ### Try it now (Web)
 
-Open **[techempower-org.github.io/forageforall/app/](https://techempower-org.github.io/forageforall/app/)** in any browser. No install, no account required to browse the map.
+Open **[forage.techempower.org/app/](https://forage.techempower.org/app/)** in any browser. No install, no account required to browse the map.
 
 ### Try it now (Android)
 
