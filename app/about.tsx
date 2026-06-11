@@ -27,7 +27,7 @@ const CREDITS = [
 ];
 
 export default function About() {
-  const openGitHub = () => Linking.openURL("https://github.com/forage-for-all/app");
+  const openGitHub = () => Linking.openURL("https://github.com/techempower-org/forageforall");
   return (
     <View style={{ flex: 1, backgroundColor: colors.bg }}>
       <SafeAreaView edges={["top"]}>

@@ -9,19 +9,19 @@ Built with Expo + React Native + TypeScript + InstantDB + Google Maps.
 
 ## Docs
 
-- [Repository README](https://github.com/forage-for-all/app/blob/main/README.md): Project overview, install, stack
-- [Agent guide](https://github.com/forage-for-all/app/blob/main/AGENTS.md): Canonical guide for AI coding agents working in this repo
-- [Architecture](https://github.com/forage-for-all/app/blob/main/docs/ARCHITECTURE.md): 5-minute mental model of the system
-- [Contributing](https://github.com/forage-for-all/app/blob/main/CONTRIBUTING.md): How to pitch in, code style, PR flow
-- [Foraging Ethics](https://github.com/forage-for-all/app/blob/main/FORAGING_ETHICS.md): Community agreement every contributor operates under
+- [Repository README](https://github.com/techempower-org/forageforall/blob/main/README.md): Project overview, install, stack
+- [Agent guide](https://github.com/techempower-org/forageforall/blob/main/AGENTS.md): Canonical guide for AI coding agents working in this repo
+- [Architecture](https://github.com/techempower-org/forageforall/blob/main/docs/ARCHITECTURE.md): 5-minute mental model of the system
+- [Contributing](https://github.com/techempower-org/forageforall/blob/main/CONTRIBUTING.md): How to pitch in, code style, PR flow
+- [Foraging Ethics](https://github.com/techempower-org/forageforall/blob/main/FORAGING_ETHICS.md): Community agreement every contributor operates under
 
 ## Policy
 
-- [Privacy Policy](https://github.com/forage-for-all/app/blob/main/PRIVACY.md): No analytics, no trackers, fuzzy locations by default
-- [Security Policy](https://github.com/forage-for-all/app/blob/main/SECURITY.md): Responsible disclosure
-- [License (AGPLv3)](https://github.com/forage-for-all/app/blob/main/LICENSE): Modified versions must share source, including hosted services
+- [Privacy Policy](https://github.com/techempower-org/forageforall/blob/main/PRIVACY.md): No analytics, no trackers, fuzzy locations by default
+- [Security Policy](https://github.com/techempower-org/forageforall/blob/main/SECURITY.md): Responsible disclosure
+- [License (AGPLv3)](https://github.com/techempower-org/forageforall/blob/main/LICENSE): Modified versions must share source, including hosted services
 
 ## Optional
 
-- [Good first issues for agents](https://github.com/forage-for-all/app/blob/main/.github/ISSUE_TEMPLATE/agent-tasks.md): Pre-scoped tasks with file paths and acceptance criteria
+- [Good first issues for agents](https://github.com/techempower-org/forageforall/blob/main/.github/ISSUE_TEMPLATE/agent-tasks.md): Pre-scoped tasks with file paths and acceptance criteria
 - [Press kit](https://forage-for-all.github.io/app/press/): Logos, screenshots, boilerplate

@@ -3,6 +3,10 @@
   "version": "0.1.5",
   "description": "Open-source app for mapping fruit trees and edible plants on public land.",
   "license": "AGPL-3.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/techempower-org/forageforall.git"
+  },
   "private": true,
   "main": "expo-router/entry",
   "scripts": {

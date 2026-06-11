@@ -31,8 +31,8 @@ All free tiers are enough for development:
 ## Clone & configure
 
 ```bash
-git clone https://github.com/forage-for-all/app
-cd app
+git clone https://github.com/techempower-org/forageforall
+cd forageforall
 nvm use
 npm install
 cp .env.example .env
@@ -111,7 +111,7 @@ npm run android -- --device
 
 - Read [`AGENTS.md`](../AGENTS.md) for code conventions
 - Read [`docs/ARCHITECTURE.md`](./ARCHITECTURE.md) for the mental model
-- Pick a [`good first issue`](https://github.com/forage-for-all/app/labels/good%20first%20issue)
+- Pick a [`good first issue`](https://github.com/techempower-org/forageforall/labels/good%20first%20issue)
 
 ---
 
