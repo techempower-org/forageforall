@@ -59,4 +59,4 @@ What we're working on, what's next, what we've said no to. Reality check: this i
 - File issues tagged `enhancement`
 - Upvote with 👍 on existing ones
 - Send a PR for anything in "near-term"
-- Join the Discord for loose chat
+- Join [GitHub Discussions](https://github.com/techempower-org/forageforall/discussions) for loose chat

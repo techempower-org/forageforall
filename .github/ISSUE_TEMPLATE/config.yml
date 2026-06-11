@@ -1,11 +1,11 @@
 blank_issues_enabled: false
 contact_links:
   - name: 💬 Community chat
-    url: https://discord.gg/forageforall
+    url: https://github.com/techempower-org/forageforall/discussions
     about: Quick questions, local forager networking, and show-and-tell.
   - name: 🌱 Foraging ethics
-    url: https://github.com/forage-for-all/app/blob/main/FORAGING_ETHICS.md
+    url: https://github.com/techempower-org/forageforall/blob/main/FORAGING_ETHICS.md
     about: Read this before reporting ethics concerns — most answers are here.
   - name: 🔒 Security disclosure
-    url: https://github.com/forage-for-all/app/blob/main/SECURITY.md
+    url: https://github.com/techempower-org/forageforall/blob/main/SECURITY.md
     about: Do NOT open a public issue for security bugs. See SECURITY.md.

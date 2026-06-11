@@ -4,7 +4,7 @@
 
 **Do not open a public GitHub issue for security bugs.**
 
-Email **security@forageforall.org** with:
+Use GitHub's private vulnerability reporting: [Report a vulnerability](https://github.com/techempower-org/forageforall/security/advisories/new) (or email **jp@techempower.org** if you can't use GitHub). Include:
 - Description of the issue
 - Steps to reproduce
 - Impact assessment (who's affected, how bad)

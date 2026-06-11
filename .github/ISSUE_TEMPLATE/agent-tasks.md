@@ -23,7 +23,7 @@ Copy these into GitHub Issues when the repo goes live; tag them `agent-friendly`
 
 ## 4. Share pin as deep link
 **Files:** `app/listing/[id].tsx`, `app.config.ts`
-**Scope:** Tap the share button → generate a `forageforall://listing/<id>` link that opens the pin. Also include an `https://` universal link fallback.
+**Scope:** Tap the share button → generate a `forage://listing/<id>` link that opens the pin (the registered scheme is `forage`, app.config.ts:14). Also include an `https://forage.techempower.org/app/listing/<id>` universal-link fallback (requires adding iOS associatedDomains + Android intentFilters).
 **Acceptance:** Link works cold-launch on iOS + Android.
 
 ## 5. Dark map style toggle

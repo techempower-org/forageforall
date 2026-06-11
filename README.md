@@ -90,7 +90,7 @@ Full walkthrough: [`docs/SETUP.md`](./docs/SETUP.md)
 | Routing | [Expo Router v3](https://docs.expo.dev/router/introduction/) | File-based routes — a file in `app/` is a screen |
 | Backend | [InstantDB](https://instantdb.com) | Realtime sync + auth + permissions, no custom server |
 | Maps | [react-native-maps](https://github.com/react-native-maps/react-native-maps) + Google Maps SDK | Custom paper-textured style |
-| Web maps | [@react-google-maps/api](https://github.com/visgl/react-google-maps) | Aliased for web via metro.config.js — same API keys |
+| Web maps | [@react-google-maps/api](https://github.com/JustFly1984/react-google-maps-api) | Aliased for web via metro.config.js — same API keys |
 | Language | TypeScript (strict) | Required throughout — no `any` escapes |
 
 **No custom backend.** InstantDB handles auth, realtime sync, and access control. This keeps the app deployable by a single volunteer.
