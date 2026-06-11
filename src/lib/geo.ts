@@ -31,6 +31,41 @@ export function geohash5CellsForRegion(
   return geohash.bboxes(minLat, minLng, maxLat, maxLng, 5);
 }
 
+export type RegionBounds = {
+  minLat: number;
+  maxLat: number;
+  minLng: number;
+  maxLng: number;
+};
+
+/** The lat/lng rectangle of a viewport region. */
+export function regionBounds(region: {
+  lat: number;
+  lng: number;
+  latDelta: number;
+  lngDelta: number;
+}): RegionBounds {
+  return {
+    minLat: region.lat - region.latDelta / 2,
+    maxLat: region.lat + region.latDelta / 2,
+    minLng: region.lng - region.lngDelta / 2,
+    maxLng: region.lng + region.lngDelta / 2,
+  };
+}
+
+/** True if a point falls within (or on) the region rectangle. */
+export function withinBounds(
+  point: { lat: number; lng: number },
+  b: RegionBounds,
+): boolean {
+  return (
+    point.lat >= b.minLat &&
+    point.lat <= b.maxLat &&
+    point.lng >= b.minLng &&
+    point.lng <= b.maxLng
+  );
+}
+
 /** Haversine distance in meters. */
 export function distanceMeters(
   a: { lat: number; lng: number },
