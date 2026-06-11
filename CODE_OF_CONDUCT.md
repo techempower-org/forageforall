@@ -11,11 +11,11 @@ This project follows the [Contributor Covenant v2.1](https://www.contributor-cov
 
 ## Scope
 
-Applies in all project spaces: GitHub issues/PRs, Discord, any event under the Forage for All name, and public spaces where you represent the project.
+Applies in all project spaces: GitHub issues/PRs/Discussions, any event under the Forage for All name, and public spaces where you represent the project.
 
 ## Enforcement
 
-Report abuse to **conduct@forageforall.org**. Reports go to a small, rotating volunteer council — not to the person you're reporting.
+Report abuse to **jp@techempower.org**. Reports go to a small, rotating volunteer council — not to the person you're reporting.
 
 Consequences range from a private warning to a permanent ban, depending on severity and pattern.
 

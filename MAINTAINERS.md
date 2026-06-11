@@ -6,7 +6,7 @@ People with merge rights on this repository.
 
 | Name | GitHub | Timezone | Focus |
 |---|---|---|---|
-| *Founder* | @— | — | Overall, mobile |
+| JP Hein (founder) | [@jphein](https://github.com/jphein) | US-Pacific | Overall, mobile |
 | *TBD* | @— | — | Species catalog, ethics |
 | *TBD* | @— | — | Docs, community |
 

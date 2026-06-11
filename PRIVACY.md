@@ -66,4 +66,4 @@ We'll post updates here and notify in-app for any material change.
 
 ## Contact
 
-privacy@forageforall.org
+jp@techempower.org

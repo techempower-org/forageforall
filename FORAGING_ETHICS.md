@@ -82,7 +82,7 @@ If you're unsure, pin it **private** (visible only to you) and ask a moderator.
 
 ## Reporting
 
-See a pin that breaks these rules? Tap **⋯ → Flag** in the app, or open an issue tagged [`ethics`](https://github.com/forage-for-all/app/labels/ethics) on GitHub.
+See a pin that breaks these rules? Tap **⋯ → Flag** in the app, or open an issue tagged [`ethics`](https://github.com/techempower-org/forageforall/labels/ethics) on GitHub.
 
 Repeat offenders lose posting privileges.
 

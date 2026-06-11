@@ -53,9 +53,9 @@ From Wendell Berry (project tagline):
 
 ## Contact
 
-- **Press:** press@forageforall.org
-- **Partnerships:** hello@forageforall.org
-- **Security:** security@forageforall.org
+- **Press:** jp@techempower.org
+- **Partnerships:** jp@techempower.org
+- **Security:** [report privately on GitHub](https://github.com/techempower-org/forageforall/security/advisories/new)
 
 ## Do & Don't
 

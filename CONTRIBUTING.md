@@ -13,14 +13,14 @@ Thanks for thinking about pitching in. This project only works with many hands.
 ## Development setup
 
 ```bash
-git clone https://github.com/forage-for-all/app
-cd app
+git clone https://github.com/techempower-org/forageforall.git
+cd forageforall
 npm install
 cp .env.example .env
 # Fill in:
-#   EXPO_PUBLIC_INSTANT_APP_ID=   (free at instantdb.com)
-#   EXPO_PUBLIC_GOOGLE_MAPS_IOS=
-#   EXPO_PUBLIC_GOOGLE_MAPS_ANDROID=
+#   INSTANT_APP_ID=           (free at instantdb.com)
+#   GOOGLE_MAPS_IOS_KEY=
+#   GOOGLE_MAPS_ANDROID_KEY=
 npm run schema:push
 npm run seed:species
 npx expo prebuild --clean

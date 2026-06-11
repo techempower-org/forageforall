@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for filing a bug. Before you continue, check the [existing issues](https://github.com/forage-for-all/app/issues?q=is%3Aissue) to avoid duplicates.
+        Thanks for filing a bug. Before you continue, check the [existing issues](https://github.com/techempower-org/forageforall/issues?q=is%3Aissue) to avoid duplicates.
 
   - type: textarea
     id: what-happened

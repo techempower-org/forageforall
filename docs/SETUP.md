@@ -41,9 +41,11 @@ cp .env.example .env
 Open `.env` and fill in:
 
 ```
-EXPO_PUBLIC_INSTANT_APP_ID=<from instantdb dashboard>
-EXPO_PUBLIC_GOOGLE_MAPS_IOS=<restricted ios key>
-EXPO_PUBLIC_GOOGLE_MAPS_ANDROID=<restricted android key>
+INSTANT_APP_ID=<from instantdb dashboard>
+INSTANT_ADMIN_TOKEN=<only needed for seed:listings>
+GOOGLE_MAPS_IOS_KEY=<restricted ios key>
+GOOGLE_MAPS_ANDROID_KEY=<restricted android key>
+EXPO_PUBLIC_GOOGLE_MAPS_WEB_KEY=<web key, restricted to HTTP referrers>
 ```
 
 ## Push the DB schema + seed species
@@ -81,10 +83,10 @@ In the running app:
 → You skipped `expo prebuild`. Run it.
 
 **Map is blank on Android**
-→ Wrong or unrestricted Google Maps Android key. Check the key has Maps SDK for Android enabled, and that the bundle ID restriction matches `com.forageforall.app`.
+→ Wrong or unrestricted Google Maps Android key. Check the key has Maps SDK for Android enabled, and that the package restriction matches `org.forageforall.app`.
 
 **Map is blank on iOS**
-→ Same but for the iOS key. Restrict by bundle ID `com.forageforall.app`.
+→ Same but for the iOS key. Restrict by bundle ID `org.forageforall.app`.
 
 **"No InstantDB app configured"**
 → `.env` not loaded. Kill Metro, restart with `npm run ios` (Expo only reads `.env` at start).
