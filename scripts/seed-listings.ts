@@ -671,6 +671,29 @@ async function fetchPortlandTrees(bbox: [number, number, number, number]): Promi
 
 // ── Write to InstantDB ────────────────────────────────────────────────────────
 
+/**
+ * db.transact with backoff. InstantDB intermittently rejects burst writes
+ * with 429 "The query took too long to complete" (server-side throttle);
+ * the same chunk almost always succeeds on retry after a pause.
+ */
+async function transactWithRetry(
+  chunk: Parameters<typeof db.transact>[0],
+  attempts = 5,
+) {
+  for (let attempt = 1; ; attempt++) {
+    try {
+      return await db.transact(chunk);
+    } catch (e) {
+      const status = (e as { status?: number }).status;
+      const retryable = status === 429 || status === 503;
+      if (!retryable || attempt >= attempts) throw e;
+      const delay = 2000 * 2 ** (attempt - 1);
+      console.warn(`  transact got ${status} — retry ${attempt}/${attempts - 1} in ${delay / 1000}s`);
+      await sleep(delay);
+    }
+  }
+}
+
 async function writePins(pins: PlantPin[], regionName: string) {
   if (pins.length === 0) return 0;
 
@@ -727,7 +750,7 @@ async function writePins(pins: PlantPin[], regionName: string) {
   });
 
   for (let i = 0; i < txs.length; i += 100) {
-    await db.transact(txs.slice(i, i + 100) as Parameters<typeof db.transact>[0]);
+    await transactWithRetry(txs.slice(i, i + 100) as Parameters<typeof db.transact>[0]);
   }
   return unique.length;
 }
@@ -761,7 +784,7 @@ async function wipeOrphans() {
   const BATCH = 100;
   for (let i = 0; i < orphans.length; i += BATCH) {
     const slice = orphans.slice(i, i + BATCH);
-    await db.transact(slice.map((o) => db.tx.listings[o.id].delete()));
+    await transactWithRetry(slice.map((o) => db.tx.listings[o.id].delete()));
   }
 }
 
