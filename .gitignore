@@ -7,6 +7,8 @@ web-build/
 .env
 .env.*
 !.env.example
+# Google Play service-account key (referenced by eas.json submit profile)
+play-service-account.json
 ios/
 android/
 .DS_Store
