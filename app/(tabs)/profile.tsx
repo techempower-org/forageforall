@@ -3,7 +3,7 @@
  */
 
 import React from "react";
-import { ScrollView, View, StyleSheet, Pressable } from "react-native";
+import { ScrollView, View, StyleSheet, Pressable, Linking } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
@@ -112,6 +112,20 @@ export default function ProfileScreen() {
                 label="Sign out"
                 onPress={() => db.auth.signOut()}
                 icon={<Ionicons name="log-out-outline" size={18} color={colors.text} />}
+              />
+            </View>
+            {/* Google Play requires an in-app account-deletion entry point
+                (linking out to the hosted deletion page is explicitly
+                allowed by the policy). Keep this URL in sync with
+                docs/delete-account.html and PRIVACY.md. */}
+            <View style={{ marginTop: spacing.sm }}>
+              <SecondaryButton
+                full
+                label="Delete account"
+                onPress={() =>
+                  Linking.openURL("https://forage.techempower.org/delete-account.html")
+                }
+                icon={<Ionicons name="trash-outline" size={18} color={colors.text} />}
               />
             </View>
           </Section>

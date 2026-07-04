@@ -55,12 +55,22 @@ const config: ExpoConfig = {
         apiKey: process.env.GOOGLE_MAPS_ANDROID_KEY,
       },
     },
-    permissions: [
-      "ACCESS_COARSE_LOCATION",
-      "ACCESS_FINE_LOCATION",
-      "CAMERA",
-      "READ_EXTERNAL_STORAGE",
-      "WRITE_EXTERNAL_STORAGE",
+    // Play submission: request ONLY what the code actually uses today.
+    // Location (foreground, one-shot) centers the map and prefills the
+    // add-pin coordinate — see src/hooks/useCurrentLocation.ts. Coordinates
+    // are fuzzed to ~110m before any write (src/db/actions.ts).
+    permissions: ["ACCESS_COARSE_LOCATION", "ACCESS_FINE_LOCATION"],
+    // expo-camera and expo-image-picker are installed (photo upload is on
+    // the roadmap) but NO code path uses them yet. Their library manifests
+    // would still merge these permissions into the APK/AAB, which Play
+    // flags as unused sensitive permissions — block them until the photo
+    // feature actually ships. When it does: delete this list and restore
+    // the camera/image-picker config plugins below.
+    blockedPermissions: [
+      "android.permission.CAMERA",
+      "android.permission.RECORD_AUDIO",
+      "android.permission.READ_EXTERNAL_STORAGE",
+      "android.permission.WRITE_EXTERNAL_STORAGE",
     ],
   },
   plugins: [
@@ -74,15 +84,17 @@ const config: ExpoConfig = {
       },
     ],
     [
-      "expo-camera",
+      // Google Play requires new apps to target Android 15 (API 35) since
+      // 2025-08-31. Expo SDK 51 defaults to targetSdk 34, which Play
+      // rejects at AAB upload. compileSdk stays at the SDK 51 default (34)
+      // to remain inside AGP 8.2's support envelope. The real fix is the
+      // Expo SDK 52+ upgrade (tracked in docs/play-store/SUBMISSION-RUNBOOK.md);
+      // this override is the minimal change that makes the AAB uploadable.
+      "expo-build-properties",
       {
-        cameraPermission: "Allow Forage to access your camera to document finds.",
-      },
-    ],
-    [
-      "expo-image-picker",
-      {
-        photosPermission: "Allow Forage to access photos to attach to listings.",
+        android: {
+          targetSdkVersion: 35,
+        },
       },
     ],
   ],
