@@ -12,7 +12,9 @@ on branch `feat/play-store-submission`; this file sequences the rest.
 - `app.config.ts`: stable applicationId `org.forageforall.app`, permissions minimized
   (location only; unused camera/audio/storage **blocked**), `targetSdkVersion 35` via
   `expo-build-properties` (Play hard-requires ≥35 for new apps since 2025-08-31)
-- Hosted privacy policy → `https://forage.techempower.org/privacy.html`
+- Hosted privacy policy → `https://techempower.org/forageforall/privacy` (live; on the
+  publisher's own domain, auto-generated from this repo's `PRIVACY.md` — see
+  maintenance note in 2.3)
 - Hosted deletion page → `https://forage.techempower.org/delete-account.html`
   (+ in-app Profile → Delete account entry point, as Play's deletion policy requires)
 - Play icon 512 + feature graphic 1024×500 generated (`assets/` here)
@@ -127,7 +129,7 @@ es-US* and paste the Spanish set.
 
 | Form | Answer | Source |
 |---|---|---|
-| Privacy policy | `https://forage.techempower.org/privacy.html` | — |
+| Privacy policy | `https://techempower.org/forageforall/privacy` | — |
 | App access | “All functionality available without special access” — browsing is anonymous; publishing uses open self-serve signup (any email, magic code — a reviewer can create an account in seconds; pre-provisioned test credentials are impossible with magic-code auth) | — |
 | Ads | **No** | AGENTS.md hard rule |
 | Content rating | Fill per **`content-rating.md`** | sheet |
@@ -139,6 +141,13 @@ es-US* and paste the Spanish set.
 | Government app | No | — |
 | Financial features | None | — |
 | Health | None | — |
+
+> **Keeping the hosted policy in sync:** the privacy URL above is a static page
+> on techempower.org generated **from this repo's `PRIVACY.md`**. If `PRIVACY.md`
+> changes, regenerate the page in the techempower.org repo via `npx marked` →
+> `lib/data/privacy-forageforall.ts` (documented in that repo's commit `19ad615`)
+> and redeploy. PRIVACY.md stays the single source of truth — never edit the
+> hosted page directly.
 
 **2.4 · First upload → Internal testing.** Test and release → Internal testing →
 Create release → upload the `.aab` from 1.2 → release notes (one line:

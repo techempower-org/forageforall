@@ -50,7 +50,7 @@ Drop a pin, pick the species from the catalog, and mark ripeness. Others confirm
 • Pin coordinates are rounded to a ~110 m grid before they're saved — the neighborhood, not the doorstep
 • Your device location never leaves your device; it only centers the map
 • Browsing needs no account, and anonymous reports are allowed
-Full policy (short and human-readable): forage.techempower.org/privacy.html
+Full policy (short and human-readable): techempower.org/forageforall/privacy
 
 🌱 FREE AND OPEN SOURCE
 Forage for All is AGPLv3 open source, built by volunteers, run by a 501(c)(3) nonprofit. Free forever: no subscriptions, no paywalls, no venture funding, no data sold. Read the code, file an issue, or contribute at github.com/techempower-org/forageforall.
@@ -81,7 +81,7 @@ Marca un punto, elige la especie del catálogo e indica su maduración. Otras pe
 • Las coordenadas se redondean a una cuadrícula de ~110 m antes de guardarse: el vecindario, no la puerta de tu casa
 • La ubicación de tu dispositivo nunca sale de él; solo centra el mapa
 • Explorar no requiere cuenta, y se permiten reportes anónimos
-Política completa (corta y legible): forage.techempower.org/privacy.html
+Política completa (corta y legible): techempower.org/forageforall/privacy
 
 🌱 GRATIS Y DE CÓDIGO ABIERTO
 Forage for All es código abierto (AGPLv3), construido por voluntarios y operado por una organización sin fines de lucro 501(c)(3). Gratis para siempre: sin suscripciones, sin muros de pago, sin capital de riesgo, sin venta de datos. Lee el código en github.com/techempower-org/forageforall.
@@ -136,4 +136,4 @@ already placed in the copy; keep them if you edit:
 
 - Support email: `jp@techempower.org`
 - Website: `https://forage.techempower.org/`
-- Privacy policy URL (App content form): `https://forage.techempower.org/privacy.html`
+- Privacy policy URL (App content form): `https://techempower.org/forageforall/privacy`

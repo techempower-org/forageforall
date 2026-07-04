@@ -4,7 +4,8 @@
 
 This is the whole policy. No dark patterns, no legalese.
 
-Hosted copy (for app-store listings): <https://forage.techempower.org/privacy.html>
+Hosted copy (for app-store listings): <https://techempower.org/forageforall/privacy>
+(auto-generated from this file — see the techempower.org repo)
 Account deletion requests: <https://forage.techempower.org/delete-account.html>
 
 ## What we collect
