@@ -1,8 +1,11 @@
 # Privacy Policy
 
-**Last updated: April 2026**
+**Last updated: July 2026**
 
 This is the whole policy. No dark patterns, no legalese.
+
+Hosted copy (for app-store listings): <https://forage.techempower.org/privacy.html>
+Account deletion requests: <https://forage.techempower.org/delete-account.html>
 
 ## What we collect
 
@@ -10,8 +13,10 @@ This is the whole policy. No dark patterns, no legalese.
 |---|---|---|---|
 | Email (if you sign up) | Magic-link auth only | InstantDB | Until you delete your account |
 | Pins you create | The product | InstantDB | Until you delete them |
-| Photos you upload | Shown on pins | InstantDB file storage | Until you delete them |
 | Coarse device location (while app open) | To center the map | Device only, never sent | Session only |
+
+(Photo upload is on the roadmap. When it ships, this table and the app-store
+data-safety declarations get a "Photos you upload" row *first*.)
 
 ## What we do NOT collect
 
@@ -25,7 +30,6 @@ This is the whole policy. No dark patterns, no legalese.
 
 **Public** (anyone using the app can see):
 - Pins you create (with fuzzy location ~110m by default)
-- Photos on pins
 - Your display name on pins and comments
 - Ripeness confirmations you add to other pins
 
@@ -52,8 +56,13 @@ We have never sold and will never sell user data. If this project is ever transf
 
 ## Your rights
 
-- **Export:** Settings → Export my data → downloadable JSON
-- **Delete:** Settings → Delete account → wipes everything within 30 days
+- **Delete:** Profile → Delete account (or visit
+  [forage.techempower.org/delete-account.html](https://forage.techempower.org/delete-account.html)).
+  Your account, pins, reports, comments, saves, and email are wiped within 30 days.
+  You can also delete any individual pin, report, or comment you created, directly in the app.
+- **Export:** Email [jp@techempower.org](mailto:jp@techempower.org) with the subject
+  "Data export" from your account email — you'll get a JSON export within 30 days.
+  (A self-serve in-app export is on the roadmap.)
 - **Correct:** Edit any pin or profile field directly
 
 ## Children
