@@ -119,7 +119,7 @@ function idForListing(sourceId: string): string {
 
 // ── Config ─────────────────────────────────────────────────────────────────
 
-const APP_ID      = process.env.INSTANT_APP_ID ?? "32870e24-647d-452a-ab13-fdaa0a8d8564";
+const APP_ID      = process.env.INSTANT_APP_ID ?? "3b2b8df2-d782-4bea-abc6-f2d4c905866a";
 const ADMIN_TOKEN = process.env.INSTANT_ADMIN_TOKEN;
 
 if (!ADMIN_TOKEN) {
@@ -127,7 +127,11 @@ if (!ADMIN_TOKEN) {
   process.exit(1);
 }
 
-const db = init({ appId: APP_ID, adminToken: ADMIN_TOKEN });
+const db = init({
+  appId: APP_ID,
+  adminToken: ADMIN_TOKEN,
+  apiURI: process.env.INSTANT_API_URI ?? "https://instant-api.aws.realm.watch",
+});
 
 const args = process.argv.slice(2);
 const filterSource = args.includes("--source") ? args[args.indexOf("--source") + 1] : null;

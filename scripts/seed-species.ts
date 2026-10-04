@@ -32,7 +32,11 @@ if (!adminToken) {
   process.exit(1);
 }
 
-const db = init({ appId, adminToken });
+const db = init({
+  appId,
+  adminToken,
+  apiURI: process.env.INSTANT_API_URI ?? "https://instant-api.aws.realm.watch",
+});
 const WIPE_ORPHANS = process.argv.includes("--wipe");
 
 

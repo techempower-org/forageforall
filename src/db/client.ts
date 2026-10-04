@@ -1,6 +1,7 @@
 /**
  * InstantDB client singleton.
- * Set INSTANT_APP_ID in your .env — see https://instantdb.com/dash
+ * Points at self-hosted Instant (realm-cloud); app id / API / WebSocket come from
+ * app.config.ts `extra` (env INSTANT_APP_ID, INSTANT_API_URI, INSTANT_WEBSOCKET_URI).
  */
 
 import { init } from "@instantdb/react-native";
@@ -18,8 +19,12 @@ if (!appId) {
   );
 }
 
+const extra = Constants.expoConfig?.extra ?? {};
+
 export const db = init({
   appId: appId ?? "MISSING_INSTANT_APP_ID",
+  apiURI: extra.instantApiURI as string | undefined,
+  websocketURI: extra.instantWebsocketURI as string | undefined,
   schema,
 });
 
