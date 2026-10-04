@@ -39,6 +39,10 @@ const changed = "size(request.modifiedFields) > 0";
 // Owner may edit fields, never the owner link itself.
 const ownerEdit = (link: string) =>
   `auth.id != null && auth.id in data.ref('${link}.id') && ${changed} && !('${link}' in request.modifiedFields)`;
+// Rows by an anonymized author are visible only to that author. Hiding the profile alone is not
+// enough: a filter on the raw link (`reports where author = <id>`) still returned their rows (measured).
+const visibleAuthor = (link: string) =>
+  `auth.id in data.ref('${link}.id') || !(true in data.ref('${link}.anonymizeReports'))`;
 const ownerOf = (link: string) => `auth.id != null && auth.id in data.ref('${link}.id')`;
 
 // Fields any signed-in user may change on any listing (report aggregates, see submitReport).
@@ -84,7 +88,7 @@ const rules = {
   },
   reports: {
     allow: {
-      view: "true",
+      view: visibleAuthor("author"),
       create: ownerOf("author"),
       update: ownerEdit("author"),
       delete: ownerOf("author"),
@@ -92,7 +96,7 @@ const rules = {
   },
   comments: {
     allow: {
-      view: "true",
+      view: visibleAuthor("author"),
       create: ownerOf("author"),
       update: ownerEdit("author"),
       delete: ownerOf("author"),
