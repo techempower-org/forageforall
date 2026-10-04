@@ -10,8 +10,10 @@
  *  - Non-owners may update ONLY a listing's report aggregates (submitReport in src/db/actions.ts
  *    writes them as the reporter), within sane bounds.
  *  - Profile stats (badges, pinsCount, confirmsCount) start at zero and can't be self-edited.
- *  - `$default` denies every namespace not listed here; `attrs.create` stays open so new fields
- *    (e.g. flags.note / flags.createdAt, absent from prod's schema) can still be written.
+ *  - `$default` denies every namespace not listed here, and clients can't create schema attrs
+ *    (otherwise any signed-in user could add arbitrary fields via their own rows: measured).
+ *    Prod lacks `flags.note` / `flags.createdAt`, so flagListing fails until those two attrs are
+ *    created with the admin token (or schema:push). Every other field the client writes exists.
  *
  * Instant rule semantics this relies on (measured on self-hosted Instant, 2026-10-04):
  *  - A link/unlink can arrive with an EMPTY request.modifiedFields, and `.all()` over an empty list is
@@ -61,7 +63,7 @@ const rules = {
   },
   attrs: {
     allow: {
-      create: "true",
+      create: "false",
     },
   },
   species: {
