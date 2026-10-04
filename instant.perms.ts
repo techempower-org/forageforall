@@ -31,6 +31,8 @@
  * `profiles.saves` never resolves anyway. After `npm run schema:push`, reopen them with
  *   saves.view/delete: "auth.id != null && auth.id in data.ref('user.id')"
  *   flags.view:        "auth.isAdmin == true || auth.id in data.ref('author.id')"
+ * Known residual (accepted): `listings where createdBy = <id>` still matches an anonymized user's
+ *   listings: it only confirms an id already known, and hiding them would remove their map pins.
  * Verified with creek-watch scratch/forage/bin/{perms_ab,code_probe,bypass_probe,link_probe}.py.
  */
 
@@ -41,8 +43,11 @@ const ownerEdit = (link: string) =>
   `auth.id != null && auth.id in data.ref('${link}.id') && ${changed} && !('${link}' in request.modifiedFields)`;
 // Rows by an anonymized author are visible only to that author. Hiding the profile alone is not
 // enough: a filter on the raw link (`reports where author = <id>`) still returned their rows (measured).
+// `true` OR the string 'true': fail closed if the attr is ever untyped (Cloud's is typed boolean today,
+// but on a schema-less app a string "true" made the profile visible: measured).
+const anonymized = (expr: string) => `(${expr} == true || ${expr} == 'true')`;
 const visibleAuthor = (link: string) =>
-  `auth.id in data.ref('${link}.id') || !(true in data.ref('${link}.anonymizeReports'))`;
+  `auth.id in data.ref('${link}.id') || !(true in data.ref('${link}.anonymizeReports') || 'true' in data.ref('${link}.anonymizeReports'))`;
 const ownerOf = (link: string) => `auth.id != null && auth.id in data.ref('${link}.id')`;
 
 // Fields any signed-in user may change on any listing (report aggregates, see submitReport).
@@ -107,7 +112,7 @@ const rules = {
       // "Anonymize my reports" hides you from others EVERYWHERE (reports, comments, listing creator):
       // an anonymized profile is visible only to its owner, so its author links resolve to nothing for
       // anyone else. Without this, any guest could read `reports { author { handle } }` (measured).
-      view: "auth.id == data.id || data.anonymizeReports != true",
+      view: `auth.id == data.id || !${anonymized("data.anonymizeReports")}`,
       // A profile's id is its user's id (useAuthedProfile); nobody creates one for someone else.
       create: [
         "auth.id != null && data.id == auth.id",
