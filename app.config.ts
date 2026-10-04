@@ -4,9 +4,22 @@ import type { ExpoConfig } from "expo/config";
  * Expo app config.
  *
  * Before building you MUST set these env vars (see .env.example):
- *   GOOGLE_MAPS_IOS_KEY, GOOGLE_MAPS_ANDROID_KEY, INSTANT_APP_ID
+ *   GOOGLE_MAPS_IOS_KEY, GOOGLE_MAPS_ANDROID_KEY, INSTANT_APP_ID,
+ *   INSTANT_API_URI, INSTANT_WEBSOCKET_URI (default: self-hosted realm-cloud)
  *   EXPO_PUBLIC_GOOGLE_MAPS_WEB_KEY  (web only — HTTP-referrer restricted key)
  */
+// Instant Cloud app (pre-migration). Pairing it with the self-hosted API would ship a client
+// that can never connect, so fail the build instead (e.g. a stale INSTANT_APP_ID CI secret).
+const INSTANT_CLOUD_APP_ID = "32870e24-647d-452a-ab13-fdaa0a8d8564";
+const instantAppId = process.env.INSTANT_APP_ID || "3b2b8df2-d782-4bea-abc6-f2d4c905866a";
+const instantApiURI = process.env.INSTANT_API_URI || "https://instant-api.aws.realm.watch";
+if (instantAppId === INSTANT_CLOUD_APP_ID && !instantApiURI.includes("instantdb.com")) {
+  throw new Error(
+    "INSTANT_APP_ID is the old Instant Cloud app but INSTANT_API_URI is self-hosted. " +
+      "Update the INSTANT_APP_ID secret to the self-hosted app id (or unset it).",
+  );
+}
+
 const config: ExpoConfig = {
   name: "Forage for All",
   slug: "forage-for-all",
@@ -99,8 +112,12 @@ const config: ExpoConfig = {
     ],
   ],
   extra: {
-    instantAppId:
-      process.env.INSTANT_APP_ID ?? "32870e24-647d-452a-ab13-fdaa0a8d8564",
+    // Self-hosted Instant on realm-cloud (migrated from Instant Cloud).
+    instantAppId,
+    instantApiURI,
+    instantWebsocketURI:
+      process.env.INSTANT_WEBSOCKET_URI ||
+      instantApiURI.replace(/^http/, "ws") + "/runtime/session",
     router: { origin: false },
     eas: {
       projectId: "19ec7145-38b0-4627-bf42-7ae7332d44e8",
