@@ -100,7 +100,10 @@ const rules = {
   },
   profiles: {
     allow: {
-      view: "true",
+      // "Anonymize my reports" hides you from others EVERYWHERE (reports, comments, listing creator):
+      // an anonymized profile is visible only to its owner, so its author links resolve to nothing for
+      // anyone else. Without this, any guest could read `reports { author { handle } }` (measured).
+      view: "auth.id == data.id || data.anonymizeReports != true",
       // A profile's id is its user's id (useAuthedProfile); nobody creates one for someone else.
       create: [
         "auth.id != null && data.id == auth.id",
