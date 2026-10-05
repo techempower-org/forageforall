@@ -84,7 +84,7 @@ jobs:
 
       - uses: actions/setup-node@v6
         with:
-          node-version: 22   # eas-cli@latest needs Node >=22 (@oclif/plugin-autocomplete 3.3.0)
+          node-version: 22   # eas-cli 24.x needs Node >=22
           cache: 'npm'
 
       - uses: expo/expo-github-action@v8
@@ -129,7 +129,7 @@ jobs:
 
       - uses: actions/setup-node@v6
         with:
-          node-version: 22   # eas-cli@latest needs Node >=22 (@oclif/plugin-autocomplete 3.3.0)
+          node-version: 22   # eas-cli 24.x needs Node >=22
           cache: 'npm'
 
       - uses: expo/expo-github-action@v8
