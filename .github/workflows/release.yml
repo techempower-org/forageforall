@@ -89,7 +89,7 @@ jobs:
 
       - uses: expo/expo-github-action@v8
         with:
-          eas-version: latest
+          eas-version: 24.10.0
           token: ${{ secrets.EXPO_TOKEN }}
 
       - run: npm ci
@@ -134,7 +134,7 @@ jobs:
 
       - uses: expo/expo-github-action@v8
         with:
-          eas-version: latest
+          eas-version: 24.10.0
           token: ${{ secrets.EXPO_TOKEN }}
 
       - run: npm ci
