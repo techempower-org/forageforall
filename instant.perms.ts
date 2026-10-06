@@ -38,9 +38,14 @@
 
 const changed = "size(request.modifiedFields) > 0";
 
-// Owner may edit fields, never the owner link itself.
-const ownerEdit = (link: string) =>
-  `auth.id != null && auth.id in data.ref('${link}.id') && ${changed} && !('${link}' in request.modifiedFields)`;
+// Owner may edit fields, never the owner link itself, nor a FROZEN link: which listing a report/comment belongs to.
+// A pure relink presents the link label in request.modifiedFields and is authorized ONLY by the source row's update
+// rule (the target listing's rule is never consulted: measured 2026-10-05), so without this an author could move
+// their report or comment onto ANY listing, skipping that listing's aggregates.
+const ownerEdit = (link: string, ...frozen: string[]) =>
+  `auth.id != null && auth.id in data.ref('${link}.id') && ${changed} && ${[link, ...frozen]
+    .map((f) => `!('${f}' in request.modifiedFields)`)
+    .join(" && ")}`;
 // Rows by an anonymized author are visible only to that author. Hiding the profile alone is not
 // enough: a filter on the raw link (`reports where author = <id>`) still returned their rows (measured).
 // `true` OR the string 'true': fail closed if the attr is ever untyped (Cloud's is typed boolean today,
@@ -95,7 +100,7 @@ const rules = {
     allow: {
       view: visibleAuthor("author"),
       create: ownerOf("author"),
-      update: ownerEdit("author"),
+      update: ownerEdit("author", "listing"),
       delete: ownerOf("author"),
     },
   },
@@ -103,7 +108,7 @@ const rules = {
     allow: {
       view: visibleAuthor("author"),
       create: ownerOf("author"),
-      update: ownerEdit("author"),
+      update: ownerEdit("author", "listing"),
       delete: ownerOf("author"),
     },
   },
