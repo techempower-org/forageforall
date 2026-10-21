@@ -63,7 +63,8 @@
   "overrides": {
     "ajv-keywords": {
       "ajv": "^8.12.0"
-    }
+    },
+    "shell-quote": "^1.8.5"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",
