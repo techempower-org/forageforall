@@ -20,6 +20,7 @@ import { db } from "../src/db/client";
 import { createListing } from "../src/db/actions";
 import { colors, palette, radius, spacing, shadow } from "../src/theme/tokens";
 import { RIPENESS_LABELS, Ripeness } from "../src/lib/ripeness";
+import { glyphFor } from "../src/lib/kinds";
 
 export default function AddFlow() {
   const router = useRouter();
@@ -250,10 +251,6 @@ export default function AddFlow() {
   );
 }
 
-function glyphFor(kind: string) {
-  const m: Record<string, string> = { apple: "🍎", pear: "🍐", citrus: "🍊", berry: "🫐", stone: "🍑", nut: "🌰", fig: "🫒", grape: "🍇", herb: "🌿", veg: "🥬", flower: "🌼", mushroom: "🍄" };
-  return m[kind] ?? "🌱";
-}
 
 const styles = StyleSheet.create({
   progress: { flexDirection: "row", gap: 4, paddingHorizontal: spacing.md, paddingBottom: spacing.sm },

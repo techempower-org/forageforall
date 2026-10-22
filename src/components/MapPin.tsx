@@ -8,21 +8,7 @@ import { Text } from "./Text";
 import { RipenessRing } from "./RipenessRing";
 import { palette, shadow } from "../theme/tokens";
 import { Ripeness } from "../lib/ripeness";
-
-const KIND_GLYPH: Record<string, string> = {
-  apple: "🍎",
-  pear: "🍐",
-  citrus: "🍊",
-  berry: "🫐",
-  stone: "🍑",
-  nut: "🌰",
-  fig: "🫒",
-  grape: "🍇",
-  herb: "🌿",
-  veg: "🥬",
-  flower: "🌼",
-  mushroom: "🍄",
-};
+import { glyphFor } from "../lib/kinds";
 
 export function MapPin({
   kind,
@@ -37,7 +23,7 @@ export function MapPin({
   selected?: boolean;
   sourceColor?: string;
 }) {
-  const glyph = KIND_GLYPH[kind] ?? "🌱";
+  const glyph = glyphFor(kind);
   const s = selected ? size + 8 : size;
   const stemColor = sourceColor ?? palette.bark;
   return (

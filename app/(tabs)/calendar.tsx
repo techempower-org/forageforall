@@ -11,6 +11,7 @@ import { Text } from "../../src/components/Text";
 import { ScreenHeader } from "../../src/components/ScreenHeader";
 import { colors, palette, radius, spacing, shadow } from "../../src/theme/tokens";
 import { MONTH_NAMES_LONG, MONTH_NAMES, currentMonth } from "../../src/lib/season";
+import { glyphFor } from "../../src/lib/kinds";
 
 export default function CalendarScreen() {
   const [month, setMonth] = useState(currentMonth());
@@ -123,14 +124,6 @@ function SpeciesTile({ species }: { species: any }) {
   );
 }
 
-function glyphFor(kind: string) {
-  const m: Record<string, string> = {
-    apple: "🍎", pear: "🍐", citrus: "🍊", berry: "🫐", stone: "🍑",
-    nut: "🌰", fig: "🫒", grape: "🍇", herb: "🌿", veg: "🥬",
-    flower: "🌼", mushroom: "🍄",
-  };
-  return m[kind] ?? "🌱";
-}
 
 const styles = StyleSheet.create({
   monthScroller: { flexGrow: 0, flexShrink: 0 },

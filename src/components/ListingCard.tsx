@@ -11,13 +11,8 @@ import { colors, palette, radius, spacing, shadow } from "../theme/tokens";
 import { describeSeason, isInSeason } from "../lib/season";
 import { RIPENESS_SHORT } from "../lib/ripeness";
 import { formatDistance } from "../lib/geo";
-import { SOURCE_BY_KEY, SourceKey, getSourceColor } from "../config/sourceLayers";
-
-const KIND_GLYPH: Record<string, string> = {
-  apple: "🍎", pear: "🍐", citrus: "🍊", berry: "🫐",
-  stone: "🍑", nut: "🌰", fig: "🫒", grape: "🍇",
-  herb: "🌿", veg: "🥬", flower: "🌼", mushroom: "🍄",
-};
+import { SOURCE_BY_KEY, getSourceColor } from "../config/sourceLayers";
+import { glyphFor, ownKey } from "../lib/kinds";
 
 export function ListingCard({
   listing,
@@ -32,9 +27,9 @@ export function ListingCard({
   const months: number[] = Array.isArray(species.seasonMonths) ? species.seasonMonths : [];
   const ripe = listing.currentRipeness ?? 0;
   const kind = listing.kind ?? species.kind ?? "herb";
-  const glyph = KIND_GLYPH[kind] ?? "🌱";
-  const sourceKey = (listing.source ?? "community") as SourceKey;
-  const sourceLayer = SOURCE_BY_KEY[sourceKey];
+  const glyph = glyphFor(kind);
+  const sourceKey: string = listing.source ?? "community";
+  const sourceLayer = ownKey(SOURCE_BY_KEY, sourceKey);
   const ripeBucket = Math.max(0, Math.min(4, Math.round(ripe))) as 0 | 1 | 2 | 3 | 4;
 
   return (
