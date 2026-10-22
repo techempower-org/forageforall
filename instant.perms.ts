@@ -69,6 +69,30 @@ const aggregatesOnly = [
 
 const PROFILE_STATS = "['badges','pinsCount','confirmsCount']";
 
+// Listing kinds: keep in sync with KIND_GLYPH in src/lib/kinds.ts. Clients index glyph tables with
+// `kind`, so a kind like "__proto__" crashed the map/browse render for every viewer (security scan
+// 2026-10-22, F3–F6); old APKs keep the unguarded lookup, so the server must refuse it too.
+const KINDS = "['apple','pear','citrus','berry','stone','nut','fig','grape','herb','veg','flower','mushroom']";
+const kindOk = (d: string) => `(${d}.kind == null || ${d}.kind in ${KINDS})`;
+// Provenance (source/sourceId/sourceSyncedAt) is written only by the admin-token imports. Clients may
+// create community pins and never change provenance, so nobody can dress a pin up as iNaturalist,
+// GBIF or city data (F8, F9). Aggregates start where createListing puts them (one report).
+const listingCreate = [
+  ownerOf("createdBy"),
+  "(data.source == null || data.source == 'community')",
+  "data.sourceId == null",
+  "data.sourceSyncedAt == null",
+  kindOk("data"),
+  "(data.reportCount == null || (data.reportCount >= 0 && data.reportCount <= 1))",
+  "(data.currentRipeness == null || (data.currentRipeness >= 0 && data.currentRipeness <= 4))",
+  "(data.stillThereScore == null || (double(data.stillThereScore) >= 0.0 && double(data.stillThereScore) <= 1.0))",
+].join(" && ");
+// Owners edit and delete only community pins. An imported row (any other source) can carry a
+// createdBy link only through a create racing the seed at a derived id; the seed unlinks it after the
+// write, and until then this keeps the owner from changing or deleting the import (F7).
+const communityRow = "(data.source == null || data.source == 'community')";
+const listingOwnerEdit = `${ownerEdit("createdBy", "source", "sourceId", "sourceSyncedAt")} && ${communityRow} && (!('kind' in request.modifiedFields) || ${kindOk("newData")})`;
+
 const rules = {
   $default: {
     allow: {
@@ -91,9 +115,9 @@ const rules = {
   listings: {
     allow: {
       view: "true",
-      create: ownerOf("createdBy"),
-      update: `(${ownerEdit("createdBy")}) || (${aggregatesOnly})`,
-      delete: ownerOf("createdBy"),
+      create: listingCreate,
+      update: `(${listingOwnerEdit}) || (${aggregatesOnly})`,
+      delete: `${ownerOf("createdBy")} && ${communityRow}`,
     },
   },
   reports: {
@@ -140,7 +164,10 @@ const rules = {
   flags: {
     allow: {
       view: "auth.isAdmin == true",
-      create: "auth.id != null",
+      // The author link must be the caller, as for reports and comments: otherwise anyone could file
+      // flags in another member's name (security scan 2026-10-22, F1). Where `flags.author` still
+      // points at a phantom namespace this rule errors, i.e. fails closed, until schema:push.
+      create: `${ownerOf("author")} && (data.resolved == null || data.resolved == false)`,
       update: "auth.isAdmin == true",
       delete: "auth.isAdmin == true",
     },
