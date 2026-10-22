@@ -58,13 +58,17 @@ const ownerOf = (link: string) => `auth.id != null && auth.id in data.ref('${lin
 // Fields any signed-in user may change on any listing (report aggregates, see submitReport).
 const REPORT_AGGREGATES = "['currentRipeness','reportCount','stillThereScore','lastConfirmedAt']";
 const prevCount = "(data.reportCount == null ? 0 : data.reportCount)";
+// Bounds on the aggregates, for whoever writes them (a reporter, or the owner editing their pin).
+const aggregateBounds = [
+  "(!('currentRipeness' in request.modifiedFields) || (newData.currentRipeness >= 0 && newData.currentRipeness <= 4))",
+  "(!('stillThereScore' in request.modifiedFields) || (double(newData.stillThereScore) >= 0.0 && double(newData.stillThereScore) <= 1.0))",
+  `(!('reportCount' in request.modifiedFields) || (newData.reportCount >= ${prevCount} && newData.reportCount <= ${prevCount} + 2))`,
+].join(" && ");
 const aggregatesOnly = [
   "auth.id != null",
   changed,
   `request.modifiedFields.all(f, f in ${REPORT_AGGREGATES})`,
-  "(!('currentRipeness' in request.modifiedFields) || (newData.currentRipeness >= 0 && newData.currentRipeness <= 4))",
-  "(!('stillThereScore' in request.modifiedFields) || (double(newData.stillThereScore) >= 0.0 && double(newData.stillThereScore) <= 1.0))",
-  `(!('reportCount' in request.modifiedFields) || (newData.reportCount >= ${prevCount} && newData.reportCount <= ${prevCount} + 2))`,
+  aggregateBounds,
 ].join(" && ");
 
 const PROFILE_STATS = "['badges','pinsCount','confirmsCount']";
@@ -91,7 +95,7 @@ const listingCreate = [
 // createdBy link only through a create racing the seed at a derived id; the seed unlinks it after the
 // write, and until then this keeps the owner from changing or deleting the import (F7).
 const communityRow = "(data.source == null || data.source == 'community')";
-const listingOwnerEdit = `${ownerEdit("createdBy", "source", "sourceId", "sourceSyncedAt")} && ${communityRow} && (!('kind' in request.modifiedFields) || ${kindOk("newData")})`;
+const listingOwnerEdit = `${ownerEdit("createdBy", "source", "sourceId", "sourceSyncedAt")} && ${communityRow} && (!('kind' in request.modifiedFields) || ${kindOk("newData")}) && ${aggregateBounds}`;
 
 const rules = {
   $default: {
