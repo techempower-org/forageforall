@@ -36,6 +36,7 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: "22"
+          check-latest: true   # use the newest 22.x patch, not the runner's cached one
           cache: npm
 
       - run: npm ci
