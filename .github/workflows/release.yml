@@ -28,7 +28,7 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: 22
-          check-latest: true   # use the newest 22.x patch, not the runner's cached one
+          check-latest: true   # resolve the latest available Node 22.x before checking the tool cache
           cache: 'npm'
 
       - name: Install
@@ -86,7 +86,7 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: 22   # eas-cli 24.x needs Node >=22
-          check-latest: true   # use the newest 22.x patch, not the runner's cached one
+          check-latest: true   # resolve the latest available Node 22.x before checking the tool cache
           cache: 'npm'
 
       - uses: expo/expo-github-action@v8
@@ -132,7 +132,7 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: 22   # eas-cli 24.x needs Node >=22
-          check-latest: true   # use the newest 22.x patch, not the runner's cached one
+          check-latest: true   # resolve the latest available Node 22.x before checking the tool cache
           cache: 'npm'
 
       - uses: expo/expo-github-action@v8
