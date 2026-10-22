@@ -717,7 +717,8 @@ async function writePins(pins: PlantPin[], regionName: string) {
   // Listing ids are derivable from public upstream ids, so a signed-in user can pre-create a row at
   // a future import's id. update() would merge the import into it and leave their createdBy link,
   // handing them owner rights over an "official" pin (security scan 2026-10-22, F7). Never write
-  // into a row that has an owner.
+  // into a row that has an owner; and because a row can still be created between this check and
+  // our write, strip any owner from the rows we just wrote (below).
   const owned = await ownedListingIds(unique.map((p) => idForListing(p.sourceId)));
   if (owned.size > 0) {
     console.warn(`  ! skipping ${owned.size} listing id(s) that already have a createdBy owner: ${[...owned].join(", ")}`);
@@ -765,19 +766,32 @@ async function writePins(pins: PlantPin[], regionName: string) {
   for (let i = 0; i < txs.length; i += 100) {
     await transactWithRetry(txs.slice(i, i + 100) as Parameters<typeof db.transact>[0]);
   }
+
+  // Race window: a row created at one of these ids after the check above got our update merged in.
+  // Once the row exists, a non-owner can't link createdBy to it (the update rule forbids it), so
+  // unlinking the owner now leaves a plain import that nobody can claim.
+  const written = unique.map((p) => idForListing(p.sourceId)).filter((id) => !owned.has(id));
+  const raced = await ownedListingIds(written);
+  if (raced.size > 0) {
+    console.warn(`  ! ${raced.size} row(s) gained an owner during the write; unlinking: ${[...raced.keys()].join(", ")}`);
+    await transactWithRetry(
+      [...raced].map(([id, owners]) => db.tx.listings[id].unlink({ createdBy: owners })) as Parameters<typeof db.transact>[0],
+    );
+  }
   return unique.length - owned.size;
 }
 
-/** Which of these listing ids already exist with a createdBy link (a user owns them). */
-async function ownedListingIds(ids: string[]): Promise<Set<string>> {
-  const owned = new Set<string>();
+/** Listing ids among these that have a createdBy link (a user owns them), with the owner ids. */
+async function ownedListingIds(ids: string[]): Promise<Map<string, string[]>> {
+  const owned = new Map<string, string[]>();
   for (let i = 0; i < ids.length; i += 200) {
     const result = (await db.query({
       listings: { $: { where: { id: { $in: ids.slice(i, i + 200) } } }, createdBy: {} },
-    })) as { listings?: Array<{ id: string; createdBy?: unknown[] | unknown | null }> };
+    })) as { listings?: { id: string; createdBy?: { id: string }[] | { id: string } | null }[] };
     for (const l of result.listings ?? []) {
       const c = l.createdBy;
-      if (Array.isArray(c) ? c.length > 0 : c != null) owned.add(l.id);
+      const owners = (Array.isArray(c) ? c : c ? [c] : []).map((o) => o.id);
+      if (owners.length > 0) owned.set(l.id, owners);
     }
   }
   return owned;
