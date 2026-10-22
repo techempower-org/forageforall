@@ -23,6 +23,7 @@ import { MAP_STYLES, MapStyleKey } from "../config/mapStyles";
 import { getSourceColor } from "../config/sourceLayers";
 import { colors, palette, radius, shadow, spacing } from "../theme/tokens";
 import { distanceMeters } from "../lib/geo";
+import { glyphFor } from "../lib/kinds";
 
 const MAPS_KEY = process.env.EXPO_PUBLIC_GOOGLE_MAPS_WEB_KEY ?? "";
 
@@ -42,12 +43,6 @@ const KIND_FILTERS = [
   { key: "flower",   label: "Flowers" },
   { key: "mushroom", label: "Mushrooms" },
 ];
-
-const KIND_GLYPH: Record<string, string> = {
-  apple: "🍎", pear: "🍐", citrus: "🍊", berry: "🫐", stone: "🍑",
-  nut: "🌰", fig: "🫒", grape: "🍇", herb: "🌿", veg: "🥬",
-  flower: "🌼", mushroom: "🍄",
-};
 
 // SVG pin icon with ripeness-colored body and source-colored stroke —
 // mirrors the native MapPin's visual language so web users see the
@@ -203,7 +198,7 @@ export default function MapScreen() {
         position: { lat: l.lat, lng: l.lng },
         icon: {
           url: pinSvgDataUrl({
-            glyph: KIND_GLYPH[kind] ?? "🌱",
+            glyph: glyphFor(kind),
             ripeness,
             source: l.source,
           }),
@@ -246,7 +241,7 @@ export default function MapScreen() {
           icon: {
             url: clusterSvgDataUrl({
               count,
-              glyph: KIND_GLYPH[dominant] ?? "🌱",
+              glyph: glyphFor(dominant),
               ripeness: avgRipeness,
             }),
             scaledSize: new google.maps.Size(48, 56),

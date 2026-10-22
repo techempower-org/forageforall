@@ -8,6 +8,7 @@
  */
 
 import { palette } from "../theme/tokens";
+import { ownKey } from "../lib/kinds";
 
 export type SourceKey =
   | "community"
@@ -124,8 +125,7 @@ export const SOURCE_BY_KEY: Record<SourceKey, SourceLayer> = Object.fromEntries(
 ) as Record<SourceKey, SourceLayer>;
 
 export function getSourceColor(source: string | null | undefined): string {
-  const key = (source ?? "community") as SourceKey;
-  return SOURCE_BY_KEY[key]?.color ?? palette.moss;
+  return ownKey(SOURCE_BY_KEY, source ?? "community")?.color ?? palette.moss;
 }
 
 export function getDefaultEnabledSources(): SourceKey[] {

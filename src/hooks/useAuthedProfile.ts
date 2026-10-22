@@ -19,8 +19,10 @@ export function useAuthedProfile() {
     if (user && !profile) {
       db.transact(
         db.tx.profiles[user.id].update({
-          handle: user.email?.split("@")[0] ?? `forager-${user.id.slice(0, 6)}`,
-          displayName: user.email?.split("@")[0] ?? "New forager",
+          // Never derive public names from the login email: profiles are public, so the local part
+          // would publish half of the address the magic code goes to (security scan 2026-10-22, F2).
+          handle: randomHandle(),
+          displayName: "New forager",
           joinedAt: Date.now(),
           pinsCount: 0,
           confirmsCount: 0,
@@ -33,6 +35,11 @@ export function useAuthedProfile() {
   }, [user?.id, profile?.id]);
 
   return { user, profile };
+}
+
+/** `forager-` + 10 hex chars from a fresh random (v4) Instant id: opaque, and nothing to do with the email. */
+function randomHandle(): string {
+  return `forager-${newId().replace(/-/g, "").slice(-10)}`;
 }
 
 export { newId };

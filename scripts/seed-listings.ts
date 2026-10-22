@@ -714,8 +714,17 @@ async function writePins(pins: PlantPin[], regionName: string) {
     unique.push(p);
   }
 
+  // Listing ids are derivable from public upstream ids, so a signed-in user can pre-create a row at
+  // a future import's id. update() would merge the import into it and leave their createdBy link,
+  // handing them owner rights over an "official" pin (security scan 2026-10-22, F7). Never write
+  // into a row that has an owner.
+  const owned = await ownedListingIds(unique.map((p) => idForListing(p.sourceId)));
+  if (owned.size > 0) {
+    console.warn(`  ! skipping ${owned.size} listing id(s) that already have a createdBy owner: ${[...owned].join(", ")}`);
+  }
+
   const now = new Date();
-  const txs = unique.flatMap((p) => {
+  const txs = unique.filter((p) => !owned.has(idForListing(p.sourceId))).flatMap((p) => {
     const lat = fuzz(p.lat);
     const lng = fuzz(p.lng);
     const species = lookupSpecies(p.latinName, p.common);
@@ -756,7 +765,22 @@ async function writePins(pins: PlantPin[], regionName: string) {
   for (let i = 0; i < txs.length; i += 100) {
     await transactWithRetry(txs.slice(i, i + 100) as Parameters<typeof db.transact>[0]);
   }
-  return unique.length;
+  return unique.length - owned.size;
+}
+
+/** Which of these listing ids already exist with a createdBy link (a user owns them). */
+async function ownedListingIds(ids: string[]): Promise<Set<string>> {
+  const owned = new Set<string>();
+  for (let i = 0; i < ids.length; i += 200) {
+    const result = (await db.query({
+      listings: { $: { where: { id: { $in: ids.slice(i, i + 200) } } }, createdBy: {} },
+    })) as { listings?: Array<{ id: string; createdBy?: unknown[] | unknown | null }> };
+    for (const l of result.listings ?? []) {
+      const c = l.createdBy;
+      if (Array.isArray(c) ? c.length > 0 : c != null) owned.add(l.id);
+    }
+  }
+  return owned;
 }
 
 /**

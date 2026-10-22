@@ -14,6 +14,10 @@ import { colors } from "../src/theme/tokens";
 
 SplashScreen.preventAutoHideAsync().catch(() => {});
 
+// One bad row must not unmount the whole app: expo-router's boundary shows the error with a Retry
+// instead of a blank (web) or fatal (native release) render (security scan 2026-10-22, F3–F6).
+export { ErrorBoundary } from "expo-router";
+
 const ONBOARDED_KEY = "forage.onboarded.v1";
 
 export default function RootLayout() {
