@@ -34,6 +34,10 @@
  * Known residual (accepted): `listings where createdBy = <id>` still matches an anonymized user's
  *   listings: it only confirms an id already known, and hiding them would remove their map pins.
  * Verified with creek-watch scratch/forage/bin/{perms_ab,code_probe,bypass_probe,link_probe}.py.
+ * 2026-10-22 (security scan): staging A/B on a throwaway self-hosted app, 77 checks incl. provenance,
+ *   kind, aggregate bounds, import rows, flag author and inverse-side links (a link from the reverse
+ *   side, e.g. profiles.createdListings, is checked against the FORWARD row's rule: measured deny under
+ *   these rules, ALLOW under allow-all rules).
  */
 
 const changed = "size(request.modifiedFields) > 0";
@@ -58,16 +62,48 @@ const ownerOf = (link: string) => `auth.id != null && auth.id in data.ref('${lin
 // Fields any signed-in user may change on any listing (report aggregates, see submitReport).
 const REPORT_AGGREGATES = "['currentRipeness','reportCount','stillThereScore','lastConfirmedAt']";
 const prevCount = "(data.reportCount == null ? 0 : data.reportCount)";
-const aggregatesOnly = [
-  "auth.id != null",
-  changed,
-  `request.modifiedFields.all(f, f in ${REPORT_AGGREGATES})`,
+// Bounds on the aggregates, for whoever writes them (a reporter, or the owner editing their pin).
+const aggregateBounds = [
   "(!('currentRipeness' in request.modifiedFields) || (newData.currentRipeness >= 0 && newData.currentRipeness <= 4))",
   "(!('stillThereScore' in request.modifiedFields) || (double(newData.stillThereScore) >= 0.0 && double(newData.stillThereScore) <= 1.0))",
   `(!('reportCount' in request.modifiedFields) || (newData.reportCount >= ${prevCount} && newData.reportCount <= ${prevCount} + 2))`,
 ].join(" && ");
+const aggregatesOnly = [
+  "auth.id != null",
+  changed,
+  `request.modifiedFields.all(f, f in ${REPORT_AGGREGATES})`,
+  aggregateBounds,
+].join(" && ");
 
 const PROFILE_STATS = "['badges','pinsCount','confirmsCount']";
+
+// Listing kinds: keep in sync with KIND_GLYPH in src/lib/kinds.ts. Clients index glyph tables with
+// `kind`, so a kind like "__proto__" crashed the map/browse render for every viewer (security scan
+// 2026-10-22, F3–F6); old APKs keep the unguarded lookup, so the server must refuse it too.
+const KINDS = "['apple','pear','citrus','berry','stone','nut','fig','grape','herb','veg','flower','mushroom']";
+const kindOk = (d: string) => `(${d}.kind == null || ${d}.kind in ${KINDS})`;
+// Provenance (source/sourceId/sourceSyncedAt) is written only by the admin-token imports. Clients may
+// create community pins and never change provenance, so nobody can dress a pin up as iNaturalist,
+// GBIF or city data (F8, F9). Aggregates start where createListing puts them (one report).
+// Null/missing source and kind stay allowed on purpose: pins from clients older than the `source` and
+// `kind` fields are community pins without them. `== null` is also what a missing attr reads as.
+const listingCreate = [
+  ownerOf("createdBy"),
+  "(data.source == null || data.source == 'community')",
+  "data.sourceId == null",
+  "data.sourceSyncedAt == null",
+  kindOk("data"),
+  "(data.reportCount == null || (data.reportCount >= 0 && data.reportCount <= 1))",
+  "(data.currentRipeness == null || (data.currentRipeness >= 0 && data.currentRipeness <= 4))",
+  "(data.stillThereScore == null || (double(data.stillThereScore) >= 0.0 && double(data.stillThereScore) <= 1.0))",
+].join(" && ");
+// Owners edit and delete only community pins. An imported row (any other source) can carry a
+// createdBy link only through a create racing the seed at a derived id; the seed skips ids that already
+// have an owner and unlinks one that appears during its write, and until then this keeps that owner
+// from changing or deleting the import (F7). Report aggregates stay open to every signed-in user on
+// every row, imports included (that's submitReport), within aggregateBounds.
+const communityRow = "(data.source == null || data.source == 'community')";
+const listingOwnerEdit = `${ownerEdit("createdBy", "source", "sourceId", "sourceSyncedAt")} && ${communityRow} && (!('kind' in request.modifiedFields) || ${kindOk("newData")}) && ${aggregateBounds}`;
 
 const rules = {
   $default: {
@@ -91,9 +127,9 @@ const rules = {
   listings: {
     allow: {
       view: "true",
-      create: ownerOf("createdBy"),
-      update: `(${ownerEdit("createdBy")}) || (${aggregatesOnly})`,
-      delete: ownerOf("createdBy"),
+      create: listingCreate,
+      update: `(${listingOwnerEdit}) || (${aggregatesOnly})`,
+      delete: `${ownerOf("createdBy")} && ${communityRow}`,
     },
   },
   reports: {
@@ -140,7 +176,10 @@ const rules = {
   flags: {
     allow: {
       view: "auth.isAdmin == true",
-      create: "auth.id != null",
+      // The author link must be the caller, as for reports and comments: otherwise anyone could file
+      // flags in another member's name (security scan 2026-10-22, F1). Where `flags.author` still
+      // points at a phantom namespace this rule errors, i.e. fails closed, until schema:push.
+      create: `${ownerOf("author")} && (data.resolved == null || data.resolved == false)`,
       update: "auth.isAdmin == true",
       delete: "auth.isAdmin == true",
     },
