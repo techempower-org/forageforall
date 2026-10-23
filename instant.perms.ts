@@ -34,6 +34,10 @@
  * Known residual (accepted): `listings where createdBy = <id>` still matches an anonymized user's
  *   listings: it only confirms an id already known, and hiding them would remove their map pins.
  * Verified with creek-watch scratch/forage/bin/{perms_ab,code_probe,bypass_probe,link_probe}.py.
+ * 2026-10-22 (security scan): staging A/B on a throwaway self-hosted app, 77 checks incl. provenance,
+ *   kind, aggregate bounds, import rows, flag author and inverse-side links (a link from the reverse
+ *   side, e.g. profiles.createdListings, is checked against the FORWARD row's rule: measured deny under
+ *   these rules, ALLOW under allow-all rules).
  */
 
 const changed = "size(request.modifiedFields) > 0";
@@ -81,6 +85,8 @@ const kindOk = (d: string) => `(${d}.kind == null || ${d}.kind in ${KINDS})`;
 // Provenance (source/sourceId/sourceSyncedAt) is written only by the admin-token imports. Clients may
 // create community pins and never change provenance, so nobody can dress a pin up as iNaturalist,
 // GBIF or city data (F8, F9). Aggregates start where createListing puts them (one report).
+// Null/missing source and kind stay allowed on purpose: pins from clients older than the `source` and
+// `kind` fields are community pins without them. `== null` is also what a missing attr reads as.
 const listingCreate = [
   ownerOf("createdBy"),
   "(data.source == null || data.source == 'community')",
@@ -92,8 +98,10 @@ const listingCreate = [
   "(data.stillThereScore == null || (double(data.stillThereScore) >= 0.0 && double(data.stillThereScore) <= 1.0))",
 ].join(" && ");
 // Owners edit and delete only community pins. An imported row (any other source) can carry a
-// createdBy link only through a create racing the seed at a derived id; the seed unlinks it after the
-// write, and until then this keeps the owner from changing or deleting the import (F7).
+// createdBy link only through a create racing the seed at a derived id; the seed skips ids that already
+// have an owner and unlinks one that appears during its write, and until then this keeps that owner
+// from changing or deleting the import (F7). Report aggregates stay open to every signed-in user on
+// every row, imports included (that's submitReport), within aggregateBounds.
 const communityRow = "(data.source == null || data.source == 'community')";
 const listingOwnerEdit = `${ownerEdit("createdBy", "source", "sourceId", "sourceSyncedAt")} && ${communityRow} && (!('kind' in request.modifiedFields) || ${kindOk("newData")}) && ${aggregateBounds}`;
 
