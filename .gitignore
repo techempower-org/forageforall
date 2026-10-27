@@ -15,3 +15,7 @@ android/
 *.tsbuildinfo
 zip-archive/
 .playwright-mcp/
+
+# Agent/session scratch (findings, task state, rescued data): per-project scratch/ syncs between
+# hosts via Syncthing and is never committed; durable results get committed in their real home.
+/scratch/
