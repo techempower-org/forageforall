@@ -267,3 +267,7 @@ This is deliberate. Community-contributed foraging data shouldn't end up behind 
 Made with 🫐 by volunteers. [Join us.](./CONTRIBUTING.md)
 
 </div>
+
+---
+
+Forage for All is a project of [TechEMPOWER](https://techempower.org), a 501(c)(3) nonprofit in Grass Valley, California: free technology help, a benefits screener and guides for low-income families.
